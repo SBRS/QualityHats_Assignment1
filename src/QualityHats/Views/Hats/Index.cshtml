@@ -13,13 +13,13 @@
     <thead>
         <tr>
             <th>
+                Image
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.HatName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImageName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.UnitPrice)
@@ -28,16 +28,19 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model) {
+        var imgUrl = @Href("~" + item.ImagePath);
+        var errImg = @Href("~/images/Error.jpg");
+
         <tr>
+            <td>
+                <img style="width: 250px; height: auto;" src="@imgUrl" alt="Hat Image" onerror="this.onerror = null; this.src = '@errImg'">
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.HatName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImageName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.UnitPrice)

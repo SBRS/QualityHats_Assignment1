@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using QualityHats.Data;
 using QualityHats.Models;
 using QualityHats.Services;
+using Microsoft.AspNetCore.Identity;
 
 namespace QualityHats
 {
@@ -51,9 +52,17 @@ namespace QualityHats
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+            services.AddIdentity<ApplicationUser, IdentityRole>(config =>
+            {
+                config.SignIn.RequireConfirmedEmail = true;
+            })
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
+
+
+            //services.AddIdentity<ApplicationUser, IdentityRole>()
+            //    .AddEntityFrameworkStores<ApplicationDbContext>()
+            //    .AddDefaultTokenProviders();
 
             services.AddMvc();
 
@@ -63,7 +72,8 @@ namespace QualityHats
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, HatContext context)
+        public async void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, HatContext context,
+            IServiceProvider serviceProvider, ApplicationDbContext apContext, UserManager<ApplicationUser> userManager)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -96,7 +106,55 @@ namespace QualityHats
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
+            await CreateRoles(serviceProvider);
+
             DbInitializer.Initialize(context);
+
+            foreach (ApplicationUser user in apContext.Users.ToList())
+            {
+                int count = userManager.GetRolesAsync(user).Result.ToList().Count;
+                if (count < 1)
+                {
+                    await userManager.AddToRoleAsync(user, "Customer");
+                }
+            }
+
         }
+
+        private async Task CreateRoles(IServiceProvider serviceProvider)
+        {
+            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var UserManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            string[] roleNames = { "Admin", "Customer" };
+            IdentityResult roleResult;
+            foreach (var roleName in roleNames)
+            {
+                var roleExist = await RoleManager.RoleExistsAsync(roleName);
+                if (!roleExist)
+                {
+                    roleResult = await RoleManager.CreateAsync(new IdentityRole(roleName));
+                }
+            }
+            var poweruser = new ApplicationUser
+            {
+                UserName = Configuration.GetSection("UserSettings")["UserEmail"],
+                Email = Configuration.GetSection("UserSettings")["UserEmail"],
+                EmailConfirmed = true,
+                Enabled = true
+            };
+            string UserPassword = Configuration.GetSection("UserSettings")["UserPassword"];
+            var _user = await UserManager.FindByEmailAsync(Configuration.GetSection("UserSettings")["UserEmail"]);
+            if (_user == null)
+            {
+                poweruser.EmailConfirmed = true;
+                var createPowerUser = await UserManager.CreateAsync(poweruser, UserPassword);
+                if (createPowerUser.Succeeded)
+                {
+                    //here we tie the new user to the "Admin" role 
+                    await UserManager.AddToRoleAsync(poweruser, "Admin");
+                }
+            }
+        }
+
     }
 }

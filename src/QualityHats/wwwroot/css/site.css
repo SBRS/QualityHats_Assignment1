@@ -1,5 +1,10 @@
-﻿.navbar-brand {
-    font-family: 'Racing Sans One', cursive;
+﻿@font-face {
+    font-family:"RacingSansOne";
+    src: url("../fonts/RacingSansOne-Regular.ttf") /* TTF file for CSS3 browsers */
+}
+
+.navbar-brand {
+    font-family: RacingSansOne, cursive;
     font-size: 25px;
 }
 

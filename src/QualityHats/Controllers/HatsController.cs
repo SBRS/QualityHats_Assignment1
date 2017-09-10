@@ -7,16 +7,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QualityHats.Data;
 using QualityHats.Models;
+using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+
 
 namespace QualityHats.Controllers
 {
     public class HatsController : Controller
     {
         private readonly HatContext _context;
+        private readonly IHostingEnvironment _hostingEnv;
 
-        public HatsController(HatContext context)
+        public HatsController(HatContext context, IHostingEnvironment hEnv)
         {
-            _context = context;    
+            _context = context;
+            _hostingEnv = hEnv;
         }
 
         // GET: Hats
@@ -56,8 +63,35 @@ namespace QualityHats.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("HatID,CategoryID,Description,HatName,ImageName,SupplierID,UnitPrice")] Hat hat)
+        public async Task<IActionResult> Create([Bind("HatID,CategoryID,Description,HatName,ImageName,SupplierID,UnitPrice")] Hat hat, IList<IFormFile> _files)
         {
+            var relativeName = "";
+            var fileName = "";
+
+            if (_files.Count < 1)
+            {
+                relativeName = "/images/Default.jpg";
+            }
+            else
+            {
+                foreach (var file in _files)
+                {
+                    fileName = ContentDispositionHeaderValue
+                                      .Parse(file.ContentDisposition)
+                                      .FileName
+                                      .Trim('"');
+                    //Path for localhost
+                    relativeName = "/images/HatImages/" + DateTime.Now.ToString("ddMMyyyy-HHmmssffffff") + fileName;
+
+                    using (FileStream fs = System.IO.File.Create(_hostingEnv.WebRootPath + relativeName))
+                    {
+                        await file.CopyToAsync(fs);
+                        fs.Flush();
+                    }
+                }
+            }
+            hat.ImagePath = relativeName;
+
             if (ModelState.IsValid)
             {
                 _context.Add(hat);
