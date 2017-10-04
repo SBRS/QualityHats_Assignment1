@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace QualityHats.Models
 {
-    public class OrderHat
+    public class OrderDetail
     {
-        public int HatID { get; set; }
-        public int OrderID { get; set; }
+        public int OrderDetailId { get; set; }
         public int Quantity { get; set; }
+        public decimal UnitPrice { get; set; }
 
         public Hat Hat { get; set; }
         public Order Order { get; set; }

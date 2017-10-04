@@ -12,7 +12,6 @@ namespace QualityHats.Models
         public string HatName { get; set; }
         public int SupplierID { get; set; }
         public int CategoryID { get; set; }
-        [Column(TypeName = "money")]
         public decimal UnitPrice { get; set; }
         public string Description { get; set; }
         public string ImagePath { get; set; }

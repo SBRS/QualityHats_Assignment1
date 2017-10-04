@@ -123,7 +123,9 @@ namespace QualityHats.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Address = model.Address, Enabled = true };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, Address = model.Address,
+                    Enabled = true, FirstName = model.FirstName, LastName = model.LastName, MobileNumber = model.MobileNumber,
+                    HomeNumber = model.HomeNumber, WorkNumber = model.WorkNumber};
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

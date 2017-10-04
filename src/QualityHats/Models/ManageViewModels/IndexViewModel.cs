@@ -14,7 +14,17 @@ namespace QualityHats.Models.ManageViewModels
 
         public string PhoneNumber { get; set; }
 
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
         public string Address { get; set; }
+
+        public string MobileNumber { get; set; }
+
+        public string HomeNumber { get; set; }
+
+        public string WorkNumber { get; set; }
 
         public bool TwoFactor { get; set; }
 

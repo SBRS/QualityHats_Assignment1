@@ -10,15 +10,15 @@ namespace QualityHats.Models
     {
         public int OrderID { get; set; }
         public string Status { get; set; }
-        public int CustomerID { get; set; }
         [Column (TypeName = "money")]
         public decimal Subtotal { get; set; }
         [Column(TypeName = "money")]
         public decimal GST { get; set; }
         [Column(TypeName = "money")]
         public decimal GrandTotal { get; set; }
+        public System.DateTime OrderDate { get; set; }
 
-        public ICollection<OrderHat> OrderHats { get; set; }
-        
+        public List<OrderDetail> OrderDetails { get; set; }
+        public ApplicationUser User { get; set; }        
     }
 }

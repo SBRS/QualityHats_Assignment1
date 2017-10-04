@@ -1,22 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using QualityHats.Data;
 
-namespace QualityHats.Data.Migrations
+namespace QualityHats.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("00000000000000_CreateIdentitySchema")]
-    partial class CreateIdentitySchema
+    [Migration("20171004022158_UnitPrice")]
+    partial class UnitPrice
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("ProductVersion", "1.0.0-rc3")
+                .HasAnnotation("ProductVersion", "1.0.1")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>
@@ -132,6 +130,8 @@ namespace QualityHats.Data.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
+                    b.Property<string>("Address");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
@@ -140,9 +140,19 @@ namespace QualityHats.Data.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
+                    b.Property<bool>("Enabled");
+
+                    b.Property<string>("FirstName");
+
+                    b.Property<string>("HomeNumber");
+
+                    b.Property<string>("LastName");
+
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
+
+                    b.Property<string>("MobileNumber");
 
                     b.Property<string>("NormalizedEmail")
                         .HasAnnotation("MaxLength", 256);
@@ -163,6 +173,8 @@ namespace QualityHats.Data.Migrations
                     b.Property<string>("UserName")
                         .HasAnnotation("MaxLength", 256);
 
+                    b.Property<string>("WorkNumber");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -173,6 +185,133 @@ namespace QualityHats.Data.Migrations
                         .HasName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("QualityHats.Models.CartItem", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("CartID");
+
+                    b.Property<int>("Count");
+
+                    b.Property<DateTime>("DateCreated");
+
+                    b.Property<int?>("HatID");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("HatID");
+
+                    b.ToTable("CartItem");
+                });
+
+            modelBuilder.Entity("QualityHats.Models.Category", b =>
+                {
+                    b.Property<int>("CategoryID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("CategoryName");
+
+                    b.HasKey("CategoryID");
+
+                    b.ToTable("Category");
+                });
+
+            modelBuilder.Entity("QualityHats.Models.Hat", b =>
+                {
+                    b.Property<int>("HatID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("CategoryID");
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("HatName");
+
+                    b.Property<string>("ImagePath");
+
+                    b.Property<int>("SupplierID");
+
+                    b.Property<decimal>("UnitPrice");
+
+                    b.HasKey("HatID");
+
+                    b.HasIndex("CategoryID");
+
+                    b.HasIndex("SupplierID");
+
+                    b.ToTable("Hat");
+                });
+
+            modelBuilder.Entity("QualityHats.Models.Order", b =>
+                {
+                    b.Property<int>("OrderID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<decimal>("GST")
+                        .HasColumnType("money");
+
+                    b.Property<decimal>("GrandTotal")
+                        .HasColumnType("money");
+
+                    b.Property<DateTime>("OrderDate");
+
+                    b.Property<string>("Status");
+
+                    b.Property<decimal>("Subtotal")
+                        .HasColumnType("money");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("OrderID");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Order");
+                });
+
+            modelBuilder.Entity("QualityHats.Models.OrderDetail", b =>
+                {
+                    b.Property<int>("OrderDetailId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("HatID");
+
+                    b.Property<int?>("OrderID");
+
+                    b.Property<int>("Quantity");
+
+                    b.Property<decimal>("UnitPrice");
+
+                    b.HasKey("OrderDetailId");
+
+                    b.HasIndex("HatID");
+
+                    b.HasIndex("OrderID");
+
+                    b.ToTable("OrderDetail");
+                });
+
+            modelBuilder.Entity("QualityHats.Models.Supplier", b =>
+                {
+                    b.Property<int>("SupplierID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Email");
+
+                    b.Property<string>("HomeNumber");
+
+                    b.Property<string>("MobileNumber");
+
+                    b.Property<string>("PhoneNumber");
+
+                    b.Property<string>("SupplierName");
+
+                    b.HasKey("SupplierID");
+
+                    b.ToTable("Supplier");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
@@ -209,6 +348,45 @@ namespace QualityHats.Data.Migrations
                     b.HasOne("QualityHats.Models.ApplicationUser")
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("QualityHats.Models.CartItem", b =>
+                {
+                    b.HasOne("QualityHats.Models.Hat", "Hat")
+                        .WithMany()
+                        .HasForeignKey("HatID");
+                });
+
+            modelBuilder.Entity("QualityHats.Models.Hat", b =>
+                {
+                    b.HasOne("QualityHats.Models.Category", "Category")
+                        .WithMany("Hats")
+                        .HasForeignKey("CategoryID")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("QualityHats.Models.Supplier", "Supplier")
+                        .WithMany("Hats")
+                        .HasForeignKey("SupplierID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("QualityHats.Models.Order", b =>
+                {
+                    b.HasOne("QualityHats.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("QualityHats.Models.OrderDetail", b =>
+                {
+                    b.HasOne("QualityHats.Models.Hat", "Hat")
+                        .WithMany()
+                        .HasForeignKey("HatID");
+
+                    b.HasOne("QualityHats.Models.Order", "Order")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("OrderID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }

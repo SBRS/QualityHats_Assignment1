@@ -17,10 +17,10 @@ namespace QualityHats.Controllers
 {
     public class HatsController : Controller
     {
-        private readonly HatContext _context;
+        private readonly ApplicationDbContext _context;
         private readonly IHostingEnvironment _hostingEnv;
 
-        public HatsController(HatContext context, IHostingEnvironment hEnv)
+        public HatsController(ApplicationDbContext context, IHostingEnvironment hEnv)
         {
             _context = context;
             _hostingEnv = hEnv;

@@ -33,14 +33,19 @@
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Hats" asp-action="Index">Products</a></li>
-                    <li><a asp-area="" asp-controller="Categories" asp-action="Index">Categories</a></li>
-                    <li><a asp-area="" asp-controller="Suppliers" asp-action="Index">Suppliers</a></li>
-                    <li><a asp-area="" asp-controller="Orders" asp-action="Index">Orders</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                     @if (User.IsInRole("Admin"))
                     {
-                        <li><a asp-area="" asp-controller="AdminApplicationUsers" asp-action="Index">Customers</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="dropdownMenu1">Administrator Tools<b class="caret"></b></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                            <li><a class="dropdown-item" asp-area="" asp-controller="AdminApplicationUsers" asp-action="Index">Customers</a></li>
+                            <li><a class="dropdown-item" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a></li>
+                            <li><a class="dropdown-item" asp-area="" asp-controller="Suppliers" asp-action="Index">Suppliers</a></li>
+                            <li><a class="dropdown-item" asp-area="" asp-controller="Orders" asp-action="Index">Orders</a></li>
+                        </ul>
+                    </li>
                     }
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
@@ -50,6 +55,10 @@
     <div class="container body-content">
         @RenderBody()
         <hr />
+        <div>
+            @await Component.InvokeAsync("ShoppingCartViewModel")
+        </div>
+
         <footer>
             <p>&copy; 2017 - Quality Hats</p>
         </footer>

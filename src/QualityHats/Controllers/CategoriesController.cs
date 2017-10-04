@@ -7,14 +7,16 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QualityHats.Data;
 using QualityHats.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace QualityHats.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class CategoriesController : Controller
     {
-        private readonly HatContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public CategoriesController(HatContext context)
+        public CategoriesController(ApplicationDbContext context)
         {
             _context = context;    
         }

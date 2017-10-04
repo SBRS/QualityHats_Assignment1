@@ -12,9 +12,9 @@ namespace QualityHats.Controllers
 {
     public class SuppliersController : Controller
     {
-        private readonly HatContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public SuppliersController(HatContext context)
+        public SuppliersController(ApplicationDbContext context)
         {
             _context = context;    
         }

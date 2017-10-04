@@ -9,7 +9,12 @@ namespace QualityHats.Models
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser
     {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public bool Enabled { get; set; }
-        public String Address { get; set; }
+        public string Address { get; set; }
+        public string MobileNumber { get; set; }
+        public string HomeNumber { get; set; }
+        public string WorkNumber { get; set; }
     }
 }

@@ -10,6 +10,32 @@
     <h4>Change your account settings</h4>
     <hr />
     <dl class="dl-horizontal">
+        <dt>First Name:</dt>
+        <dd>
+            @if (Model.FirstName != null)
+            {
+
+                <p>@Model.FirstName</p>
+            }
+            else
+            {
+                <p>No First Name Provided!</p>
+            }
+        </dd>
+
+        <dt>Last Name:</dt>
+        <dd>
+            @if (Model.LastName != null)
+            {
+
+                <p>@Model.LastName</p>
+            }
+            else
+            {
+                <p>No Last Name Provided!</p>
+            }
+        </dd>
+
         <dt>Password:</dt>
         <dd>
             @if (Model.HasPassword)
@@ -81,5 +107,43 @@
             }
         </dd>
 
+        <dt>Mobile:</dt>
+        <dd>
+            @if (Model.MobileNumber != null)
+            {
+
+                <p>@Model.MobileNumber</p>
+            }
+            else
+            {
+                <p>No Mobile Number Provided!</p>
+            }
+        </dd>
+
+        <dt>Home:</dt>
+        <dd>
+            @if (Model.HomeNumber != null)
+            {
+
+                <p>@Model.HomeNumber</p>
+            }
+            else
+            {
+                <p>No Home Number Provided!</p>
+            }
+        </dd>
+
+        <dt>Work:</dt>
+        <dd>
+            @if (Model.WorkNumber != null)
+            {
+
+                <p>@Model.WorkNumber</p>
+            }
+            else
+            {
+                <p>No Work Number Provided!</p>
+            }
+        </dd>
     </dl>
 </div>
