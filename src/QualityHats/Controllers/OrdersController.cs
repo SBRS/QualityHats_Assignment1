@@ -9,9 +9,11 @@ using QualityHats.Data;
 using QualityHats.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Authorization;
 
 namespace QualityHats.Controllers
 {
+    [Authorize(Roles = "Admin,Customer")]
     public class OrdersController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -24,12 +26,14 @@ namespace QualityHats.Controllers
         }
 
         // GET: Orders
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Orders.Include(i => i.User).AsNoTracking().ToListAsync());
         }
 
         // GET: Orders/Create
+        [Authorize(Roles = "Customer")]
         public IActionResult Create()
         {
             return View();
@@ -38,28 +42,15 @@ namespace QualityHats.Controllers
         // POST: Orders/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("OrderID,CustomerID,GST,GrandTotal,Status,Subtotal")] Order order)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(order);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction("Index");
-        //    }
-        //    return View(order);
-        //}
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Status")] Order order)
+        [Authorize(Roles = "Customer")]
+        public async Task<IActionResult> Create(Order order)
         {
             ApplicationUser user = await _userManager.GetUserAsync(User);
 
             if (ModelState.IsValid)
             {
-
                 ShoppingCart cart = ShoppingCart.GetCart(this.HttpContext);
                 List<CartItem> items = cart.GetCartItems(_context);
                 List<OrderDetail> details = new List<OrderDetail>();
@@ -75,7 +66,10 @@ namespace QualityHats.Controllers
 
                 order.User = user;
                 order.OrderDate = DateTime.Today;
-                order.GrandTotal = ShoppingCart.GetCart(this.HttpContext).GetTotal(_context);
+                order.Status = Status.Waiting;
+                order.Subtotal = ShoppingCart.GetCart(this.HttpContext).GetTotal(_context);
+                order.GST = ShoppingCart.GetCart(this.HttpContext).GetGST(_context);
+                order.GrandTotal = ShoppingCart.GetCart(this.HttpContext).GetGrandTotal(_context);
                 order.OrderDetails = details;
                 _context.SaveChanges();
 
@@ -121,6 +115,7 @@ namespace QualityHats.Controllers
         }
 
         // GET: Orders/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -145,6 +140,7 @@ namespace QualityHats.Controllers
         // POST: Orders/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var order = await _context.Orders.SingleOrDefaultAsync(m => m.OrderID == id);

@@ -1,36 +1,50 @@
 @model QualityHats.Models.Hat
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit The Hat";
 }
 
-<h2>Edit</h2>
+<h2>Edit the existing hat</h2>
 
-<form asp-action="Edit">
+<form asp-action="Edit" enctype="multipart/form-data">
     <div class="form-horizontal">
-        <h4>Hat</h4>
+        <h4>Please enter new details</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input type="hidden" asp-for="HatID" />
+        <input type="hidden" asp-for="HatID" />
         <div class="form-group">
-            <label asp-for="CategoryID" class="control-label col-md-2"></label>
+            <label asp-for="ImagePath" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <select asp-for="CategoryID" class="form-control" asp-items="ViewBag.CategoryID"></select>
-                <span asp-validation-for="CategoryID" class="text-danger" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Description" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger" />
+                <img style="width: 250px; height: auto;" src="@Href("~" + Model.ImagePath)" alt="Hat Image" onerror="this.onerror = null; this.src = '@Href("~/images/Error.jpg")'">
+                <input asp-for="ImagePath" type="hidden" class="form-control" placeholder="@Model.ImagePath" />
             </div>
         </div>
         <div class="form-group">
             <label asp-for="HatName" class="col-md-2 control-label"></label>
             <div class="col-md-10">
                 <input asp-for="HatName" class="form-control" />
-                <span asp-validation-for="HatName" class="text-danger" />
+                <span asp-validation-for="HatName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="UnitPrice" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="UnitPrice" class="form-control" />
+                <span asp-validation-for="UnitPrice" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="CategoryID" class="control-label col-md-2"></label>
+            <div class="col-md-10">
+                <select asp-for="CategoryID" class="form-control" asp-items="ViewBag.CategoryID"></select>
+                <span asp-validation-for="CategoryID" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
@@ -41,10 +55,8 @@
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="UnitPrice" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="UnitPrice" class="form-control" />
-                <span asp-validation-for="UnitPrice" class="text-danger" />
+            <div class="col-md-offset-1">
+                <input type="file" name="_files" id="_files"/>
             </div>
         </div>
         <div class="form-group">

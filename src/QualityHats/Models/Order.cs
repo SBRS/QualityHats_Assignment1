@@ -6,15 +6,18 @@ using System.Threading.Tasks;
 
 namespace QualityHats.Models
 {
+    public enum Status
+    {
+        Waiting,
+        Shipped
+    }
+
     public class Order
     {
         public int OrderID { get; set; }
-        public string Status { get; set; }
-        [Column (TypeName = "money")]
+        public Status? Status { get; set; }
         public decimal Subtotal { get; set; }
-        [Column(TypeName = "money")]
         public decimal GST { get; set; }
-        [Column(TypeName = "money")]
         public decimal GrandTotal { get; set; }
         public System.DateTime OrderDate { get; set; }
 

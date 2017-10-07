@@ -32,7 +32,13 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Hats" asp-action="Index">Products</a></li>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li><a asp-area="" asp-controller="Hats" asp-action="Index">Hats</a></li>}
+                    else
+                    {
+                        <li><a asp-area="" asp-controller="CustomerHats" asp-action="Index">Hats</a></li>
+                    }
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                     @if (User.IsInRole("Admin"))
@@ -56,7 +62,10 @@
         @RenderBody()
         <hr />
         <div>
-            @await Component.InvokeAsync("ShoppingCartViewModel")
+            @if (!User.IsInRole("Admin"))
+            {
+                @await Component.InvokeAsync("ShoppingCartViewModel")
+            }
         </div>
 
         <footer>

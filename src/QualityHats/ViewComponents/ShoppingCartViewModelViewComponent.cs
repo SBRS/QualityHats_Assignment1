@@ -29,7 +29,9 @@ namespace QualityHats.ViewComponents
             var viewModel = new ShoppingCartViewModel
             {
                 CartItems = cart.GetCartItems(_context),
-                CartTotal = cart.GetTotal(_context)
+                CartTotal = cart.GetTotal(_context),
+                CartGST = cart.GetGST(_context),
+                CartGrandTotal = cart.GetGrandTotal(_context)
             };
             return viewModel;
         }

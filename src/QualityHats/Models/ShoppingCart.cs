@@ -92,6 +92,18 @@ namespace QualityHats.Models
             return total ?? decimal.Zero;
         }
 
+        public decimal GetGST(ApplicationDbContext db)
+        {
+            decimal? gst = GetTotal(db)*0.15m;
+            return gst ?? decimal.Zero;
+        }
+
+        public decimal GetGrandTotal(ApplicationDbContext db)
+        {
+            decimal? grandTotal = GetTotal(db) + GetGST(db);
+            return grandTotal ?? decimal.Zero;
+        }
+
         public string GetCartId(HttpContext context)
         {
             if (context.Session.GetString(CartSessionKey) == null)

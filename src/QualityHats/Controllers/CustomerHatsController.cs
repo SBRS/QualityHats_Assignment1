@@ -7,27 +7,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using QualityHats.Data;
 using QualityHats.Models;
-using System.Net.Http.Headers;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using System.IO;
 using Microsoft.AspNetCore.Authorization;
 
 namespace QualityHats.Controllers
 {
-    [Authorize(Roles = "Admin")]
-    public class HatsController : Controller
+    [AllowAnonymous]
+    [Authorize(Roles = "Customer")]
+
+    public class CustomerHatsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly IHostingEnvironment _hostingEnv;
 
-        public HatsController(ApplicationDbContext context, IHostingEnvironment hEnv)
+        public CustomerHatsController(ApplicationDbContext context)
         {
-            _context = context;
-            _hostingEnv = hEnv;
+            _context = context;    
         }
 
-        // GET: Hats
+        // GET: CustomerHats
         public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             ViewData["CurrentSort"] = sortOrder;
@@ -46,7 +42,7 @@ namespace QualityHats.Controllers
             ViewData["CurrentFilter"] = searchString;
 
             var hats = from h in _context.Hats
-                           select h;
+                       select h;
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -73,7 +69,7 @@ namespace QualityHats.Controllers
             return View(await PaginatedList<Hat>.CreateAsync(hats.AsNoTracking(), page ?? 1, pageSize));
         }
 
-        // GET: Hats/Details/5
+        // GET: CustomerHats/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -86,7 +82,6 @@ namespace QualityHats.Controllers
                 .Include(h => h.Supplier)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(m => m.HatID == id);
-
             if (hat == null)
             {
                 return NotFound();
@@ -95,7 +90,7 @@ namespace QualityHats.Controllers
             return View(hat);
         }
 
-        // GET: Hats/Create
+        // GET: CustomerHats/Create
         public IActionResult Create()
         {
             ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryID");
@@ -103,37 +98,25 @@ namespace QualityHats.Controllers
             return View();
         }
 
-        // POST: Hats/Create
+        // POST: CustomerHats/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CategoryID,Description,HatName,ImageName,SupplierID,UnitPrice")] Hat hat, IList<IFormFile> _files)
+        public async Task<IActionResult> Create([Bind("HatID,CategoryID,Description,HatName,ImagePath,SupplierID,UnitPrice")] Hat hat)
         {
-            hat.ImagePath = await LoadImage(_files);
-
-            try
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
-                {
-                    _context.Add(hat);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction("Index");
-                }
+                _context.Add(hat);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
             }
-            catch (DbUpdateException /* ex */)
-            {
-                ModelState.AddModelError("", "Unable to save changes. " +
-                    "Try again, and if the problem persists " +
-                    "see your system administrator.");
-            }
-
             ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryID", hat.CategoryID);
             ViewData["SupplierID"] = new SelectList(_context.Suppliers, "SupplierID", "SupplierID", hat.SupplierID);
             return View(hat);
         }
 
-        // GET: Hats/Edit/5
+        // GET: CustomerHats/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -151,21 +134,16 @@ namespace QualityHats.Controllers
             return View(hat);
         }
 
-        // POST: Hats/Edit/5
+        // POST: CustomerHats/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("HatID,CategoryID,Description,HatName,SupplierID,UnitPrice,ImagePath")] Hat hat, IList<IFormFile> _files)
+        public async Task<IActionResult> Edit(int id, [Bind("HatID,CategoryID,Description,HatName,ImagePath,SupplierID,UnitPrice")] Hat hat)
         {
             if (id != hat.HatID)
             {
                 return NotFound();
-            }
-
-            if (_files.Count != 0)
-            {
-                hat.ImagePath = await LoadImage(_files);
             }
 
             if (ModelState.IsValid)
@@ -174,109 +152,56 @@ namespace QualityHats.Controllers
                 {
                     _context.Update(hat);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction("Index");
                 }
-                catch (DbUpdateException /* ex */)
+                catch (DbUpdateConcurrencyException)
                 {
-                    ModelState.AddModelError("", "Unable to save changes. " +
-                        "Try again, and if the problem persists " +
-                        "see your system administrator.");
+                    if (!HatExists(hat.HatID))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
                 }
+                return RedirectToAction("Index");
             }
-
             ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryID", hat.CategoryID);
             ViewData["SupplierID"] = new SelectList(_context.Suppliers, "SupplierID", "SupplierID", hat.SupplierID);
             return View(hat);
         }
 
-        // GET: Hats/Delete/5
-        public async Task<IActionResult> Delete(int? id, bool? saveChangesError = false)
+        // GET: CustomerHats/Delete/5
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var hat = await _context.Hats
-                .Include(h => h.Category)
-                .Include(h => h.Supplier)
-                .AsNoTracking()
-                .SingleOrDefaultAsync(m => m.HatID == id);
+            var hat = await _context.Hats.SingleOrDefaultAsync(m => m.HatID == id);
             if (hat == null)
             {
                 return NotFound();
             }
 
-            if (saveChangesError.GetValueOrDefault())
-            {
-                ViewData["ErrorMessage"] =
-                "Delete failed. Try again, and if the problem persists " + "see your system administrator.";
-            }
-
             return View(hat);
         }
 
-        // POST: Hats/Delete/5
+        // POST: CustomerHats/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var hat = await _context.Hats
-                .AsNoTracking()
-                .SingleOrDefaultAsync(m => m.HatID == id);
-
-            if (hat == null)
-            {
-                return RedirectToAction("Index");
-            }
-
-            try
-            {
-                _context.Hats.Remove(hat);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
-            catch (DbUpdateException ex)
-            {
-                TempData["HatUsed"] = "The Hat being deleted has been used in previous orders. Delete those orders before trying again.";
-                return RedirectToAction("Delete", new { id = id, saveChangesError = true });
-            }
+            var hat = await _context.Hats.SingleOrDefaultAsync(m => m.HatID == id);
+            _context.Hats.Remove(hat);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
         }
 
         private bool HatExists(int id)
         {
             return _context.Hats.Any(e => e.HatID == id);
-        }
-
-        public async Task<string> LoadImage(IList<IFormFile> _files)
-        {
-            var relativeName = "";
-            var fileName = "";
-
-            if (_files.Count < 1)
-            {
-                relativeName = "/images/Default.jpg";
-            }
-            else
-            {
-                foreach (var file in _files)
-                {
-                    fileName = ContentDispositionHeaderValue
-                                      .Parse(file.ContentDisposition)
-                                      .FileName
-                                      .Trim('"');
-                    //Path for localhost
-                    relativeName = "/images/HatImages/" + DateTime.Now.ToString("ddMMyyyy-HHmmssffffff") + fileName;
-
-                    using (FileStream fs = System.IO.File.Create(_hostingEnv.WebRootPath + relativeName))
-                    {
-                        await file.CopyToAsync(fs);
-                        fs.Flush();
-                    }
-                }
-            }
-
-            return relativeName;
         }
     }
 }

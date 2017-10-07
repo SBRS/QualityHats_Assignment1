@@ -8,9 +8,10 @@ using QualityHats.Data;
 namespace QualityHats.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171004214837_OrderModel")]
+    partial class OrderModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1")
@@ -255,7 +256,7 @@ namespace QualityHats.Migrations
 
                     b.Property<DateTime>("OrderDate");
 
-                    b.Property<int?>("Status");
+                    b.Property<string>("Status");
 
                     b.Property<decimal>("Subtotal");
 

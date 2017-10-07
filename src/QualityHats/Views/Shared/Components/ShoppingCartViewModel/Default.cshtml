@@ -37,9 +37,20 @@
 
     <div class="row">
         <div class="col-sm-2"></div>
-        <div class="col-sm-2">Grand Total:</div>
-
+        <div class="col-sm-2">Subtotal:</div>
         <div class="col-sm-2">$@Model.CartTotal</div>
+
+    </div>
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-2">GST:</div>
+        <div class="col-sm-2">$@Model.CartGST.ToString("0.##")</div>
+
+    </div>
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-2">Grand Total:</div>
+        <div class="col-sm-2">$@Model.CartGrandTotal.ToString("0.##")</div>
 
     </div>
 
@@ -47,9 +58,12 @@
     {
         <div class="row">
             <div class="col-sm-offset-4">
-                <a asp-action="Create" asp-controller="Orders">
-                    Proceed To Checkout <span class="glyphicon glyphicon-step-forward"></span>
-                </a>
+                <a asp-action="EmptyCart" asp-controller="ShoppingCart">Empty Cart <span class="glyphicon glyphicon-step-forward"></span></a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-offset-4">             
+                <a asp-action="Create" asp-controller="Orders">Proceed To Checkout <span class="glyphicon glyphicon-step-forward"></span></a>
             </div>
         </div>
     }
