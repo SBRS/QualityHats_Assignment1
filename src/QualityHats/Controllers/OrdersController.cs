@@ -29,7 +29,10 @@ namespace QualityHats.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Orders.Include(i => i.User).AsNoTracking().ToListAsync());
+            return View(await _context.Orders
+                .Include(i => i.User)
+                .AsNoTracking()
+                .ToListAsync());
         }
 
         // GET: Orders/Create
@@ -65,7 +68,7 @@ namespace QualityHats.Controllers
                 }
 
                 order.User = user;
-                order.OrderDate = DateTime.Today;
+                order.OrderDate = DateTime.Now;
                 order.Status = Status.Waiting;
                 order.Subtotal = ShoppingCart.GetCart(this.HttpContext).GetTotal(_context);
                 order.GST = ShoppingCart.GetCart(this.HttpContext).GetGST(_context);
@@ -114,6 +117,71 @@ namespace QualityHats.Controllers
             return View(order);
         }
 
+        // GET: Orders/Edit/5
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var order = await _context.Orders
+                .Include(i => i.User)
+                .AsNoTracking()
+                .SingleOrDefaultAsync(m => m.OrderID == id);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            var details = _context
+                .OrderDetails
+                .Where(detail => detail.Order.OrderID == order.OrderID)
+                .Include(detail => detail.Hat).ToList();
+
+            order.OrderDetails = details;
+            ViewData["Status"] = new SelectList(Enum.GetValues(typeof(Status)), order.Status);
+            return View(order);
+        }
+
+        // POST: Orders/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
+        [HttpPost, ActionName("Edit")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditPost(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var orderToUpdate = await _context.Orders.SingleOrDefaultAsync(m => m.OrderID == id);
+
+            if (await TryUpdateModelAsync<Order>(
+                orderToUpdate,
+                "",
+                o => o.Status))
+            {
+                try
+                {
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Index");
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    ModelState.AddModelError("", "Unable to save changes. " +
+                        "Try again, and if the problem persists, " +
+                        "see your system administrator.");
+                }
+            }
+            ViewData["Status"] = new SelectList(Enum.GetValues(typeof(Status)), orderToUpdate.Status);
+            return View(orderToUpdate);
+        }
+
         // GET: Orders/Delete/5
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
@@ -123,14 +191,20 @@ namespace QualityHats.Controllers
                 return NotFound();
             }
 
-            var order = await _context.Orders.Include(i => i.User).AsNoTracking().SingleOrDefaultAsync(m => m.OrderID == id);
+            var order = await _context.Orders
+                .Include(i => i.User)
+                .AsNoTracking()
+                .SingleOrDefaultAsync(m => m.OrderID == id);
 
             if (order == null)
             {
                 return NotFound();
             }
 
-            var details = _context.OrderDetails.Where(detail => detail.Order.OrderID == order.OrderID).Include(detail => detail.Hat).ToList();
+            var details = _context
+                .OrderDetails
+                .Where(detail => detail.Order.OrderID == order.OrderID)
+                .Include(detail => detail.Hat).ToList();
 
             order.OrderDetails = details;
 

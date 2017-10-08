@@ -98,8 +98,8 @@ namespace QualityHats.Controllers
         // GET: Hats/Create
         public IActionResult Create()
         {
-            ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryID");
-            ViewData["SupplierID"] = new SelectList(_context.Suppliers, "SupplierID", "SupplierID");
+            ViewData["CategoryID"] = new SelectList(_context.Categories.AsNoTracking(), "CategoryID", "CategoryName");
+            ViewData["SupplierID"] = new SelectList(_context.Suppliers.AsNoTracking(), "SupplierID", "SupplierName");
             return View();
         }
 
@@ -128,8 +128,8 @@ namespace QualityHats.Controllers
                     "see your system administrator.");
             }
 
-            ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryID", hat.CategoryID);
-            ViewData["SupplierID"] = new SelectList(_context.Suppliers, "SupplierID", "SupplierID", hat.SupplierID);
+            ViewData["CategoryID"] = new SelectList(_context.Categories.AsNoTracking(), "CategoryID", "CategoryName", hat.CategoryID);
+            ViewData["SupplierID"] = new SelectList(_context.Suppliers.AsNoTracking(), "SupplierID", "SupplierName", hat.SupplierID);
             return View(hat);
         }
 
@@ -146,8 +146,8 @@ namespace QualityHats.Controllers
             {
                 return NotFound();
             }
-            ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryID", hat.CategoryID);
-            ViewData["SupplierID"] = new SelectList(_context.Suppliers, "SupplierID", "SupplierID", hat.SupplierID);
+            ViewData["CategoryID"] = new SelectList(_context.Categories.AsNoTracking(), "CategoryID", "CategoryName", hat.CategoryID);
+            ViewData["SupplierID"] = new SelectList(_context.Suppliers.AsNoTracking(), "SupplierID", "SupplierName", hat.SupplierID);
             return View(hat);
         }
 
@@ -184,8 +184,8 @@ namespace QualityHats.Controllers
                 }
             }
 
-            ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryID", hat.CategoryID);
-            ViewData["SupplierID"] = new SelectList(_context.Suppliers, "SupplierID", "SupplierID", hat.SupplierID);
+            ViewData["CategoryID"] = new SelectList(_context.Categories.AsNoTracking(), "CategoryID", "CategoryName", hat.CategoryID);
+            ViewData["SupplierID"] = new SelectList(_context.Suppliers.AsNoTracking(), "SupplierID", "SupplierName", hat.SupplierID);
             return View(hat);
         }
 
@@ -236,7 +236,7 @@ namespace QualityHats.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            catch (DbUpdateException ex)
+            catch (DbUpdateException)
             {
                 TempData["HatUsed"] = "The Hat being deleted has been used in previous orders. Delete those orders before trying again.";
                 return RedirectToAction("Delete", new { id = id, saveChangesError = true });

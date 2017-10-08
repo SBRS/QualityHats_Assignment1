@@ -232,6 +232,7 @@
 -r:"C:\Users\alexandrli\.nuget\packages\System.Xml.ReaderWriter\4.3.0\ref\netstandard1.3\System.Xml.ReaderWriter.dll"
 -r:"C:\Users\alexandrli\.nuget\packages\System.Xml.XDocument\4.3.0\ref\netstandard1.3\System.Xml.XDocument.dll"
 -resource:"C:\WebApp\QualityHats\src\QualityHats\bin\src\QualityHats\obj\Debug\netcoreapp1.0\QualityHatsdotnet-compile.deps.json",QualityHats.deps.json
+"C:\WebApp\QualityHats\src\QualityHats\PaginatedList.cs"
 "C:\WebApp\QualityHats\src\QualityHats\Program.cs"
 "C:\WebApp\QualityHats\src\QualityHats\Startup.cs"
 "C:\WebApp\QualityHats\src\QualityHats\Controllers\AccountController.cs"
@@ -254,6 +255,8 @@
 "C:\WebApp\QualityHats\src\QualityHats\Migrations\20171004214837_OrderModel.Designer.cs"
 "C:\WebApp\QualityHats\src\QualityHats\Migrations\20171005223338_Status.cs"
 "C:\WebApp\QualityHats\src\QualityHats\Migrations\20171005223338_Status.Designer.cs"
+"C:\WebApp\QualityHats\src\QualityHats\Migrations\20171007231101_Order_Customer.cs"
+"C:\WebApp\QualityHats\src\QualityHats\Migrations\20171007231101_Order_Customer.Designer.cs"
 "C:\WebApp\QualityHats\src\QualityHats\Migrations\ApplicationDbContextModelSnapshot.cs"
 "C:\WebApp\QualityHats\src\QualityHats\Models\ApplicationUser.cs"
 "C:\WebApp\QualityHats\src\QualityHats\Models\CartItem.cs"

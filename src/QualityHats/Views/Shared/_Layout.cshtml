@@ -41,6 +41,10 @@
                     }
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                    @if (User.IsInRole("Customer"))
+                    {
+                        <li><a asp-area="" asp-controller="CustomerOrders" asp-action="Index">My Orders</a></li>
+                    }
                     @if (User.IsInRole("Admin"))
                     {
                     <li class="dropdown">

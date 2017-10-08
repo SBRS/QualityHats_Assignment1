@@ -1,52 +1,98 @@
 @model QualityHats.Models.Order
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit The Order";
 }
 
-<h2>Edit</h2>
+<h2>Edit the order status</h2>
 
 <form asp-action="Edit">
     <div class="form-horizontal">
-        <h4>Order</h4>
-        <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input type="hidden" asp-for="OrderID" />
-        <div class="form-group">
-            <label asp-for="CustomerID" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="CustomerID" class="form-control" />
-                <span asp-validation-for="CustomerID" class="text-danger" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="GST" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="GST" class="form-control" />
-                <span asp-validation-for="GST" class="text-danger" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="GrandTotal" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="GrandTotal" class="form-control" />
-                <span asp-validation-for="GrandTotal" class="text-danger" />
-            </div>
-        </div>
+        <input type="hidden" asp-for="OrderID" />
+        <hr />
         <div class="form-group">
             <label asp-for="Status" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Status" class="form-control" />
+                <select asp-for="Status" class="form-control" asp-items="ViewBag.Status"></select>
                 <span asp-validation-for="Status" class="text-danger" />
             </div>
         </div>
-        <div class="form-group">
-            <label asp-for="Subtotal" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Subtotal" class="form-control" />
-                <span asp-validation-for="Subtotal" class="text-danger" />
-            </div>
-        </div>
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.OrderID)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.OrderID)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.User.FullName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.User.FullName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Status)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Status)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.OrderDate)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.OrderDate)
+            </dd>
+            <dd>
+                <table class="table">
+                    <tr>
+                        <th>Hat</th>
+                        <th>Description</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                    </tr>
+                    @foreach (var item in Model.OrderDetails)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.Hat.HatName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Hat.Description)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Quantity)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Hat.UnitPrice)</td>
+                        </tr>
+                    }
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <label>Subtotal:</label>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.Subtotal)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <label>GST:</label>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.GST)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <label>Grand Total:</label>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model.GrandTotal)
+                        </td>
+                    </tr>
+                </table>
+            </dd>
+        </dl>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />

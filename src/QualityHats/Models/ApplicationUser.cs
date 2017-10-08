@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace QualityHats.Models
 {
@@ -16,5 +17,10 @@ namespace QualityHats.Models
         public string MobileNumber { get; set; }
         public string HomeNumber { get; set; }
         public string WorkNumber { get; set; }
+        [Display(Name = "Customer Name")]
+        public string FullName
+        {
+            get { return FirstName + " " + LastName; }
+        }
     }
 }
