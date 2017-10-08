@@ -237,6 +237,7 @@
 "C:\WebApp\QualityHats\src\QualityHats\Startup.cs"
 "C:\WebApp\QualityHats\src\QualityHats\Controllers\AccountController.cs"
 "C:\WebApp\QualityHats\src\QualityHats\Controllers\AdminApplicationUsersController.cs"
+"C:\WebApp\QualityHats\src\QualityHats\Controllers\ApplicationUsersController.cs"
 "C:\WebApp\QualityHats\src\QualityHats\Controllers\CategoriesController.cs"
 "C:\WebApp\QualityHats\src\QualityHats\Controllers\CustomerHatsController.cs"
 "C:\WebApp\QualityHats\src\QualityHats\Controllers\CustomerOrdersController.cs"

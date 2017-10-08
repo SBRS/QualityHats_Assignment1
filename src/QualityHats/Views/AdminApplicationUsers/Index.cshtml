@@ -1,14 +1,11 @@
 @model IEnumerable<QualityHats.Models.ApplicationUser>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Customers";
 }
 
-<h2>Index</h2>
+<h2>Customers</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -36,6 +33,9 @@
                 @Html.DisplayFor(modelItem => item.Enabled)
             </td>           
             <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
                 @if (item.Enabled == true)
                 {
                     <a asp-action="EnableDisable" asp-route-id="@item.Id">Disable</a>;

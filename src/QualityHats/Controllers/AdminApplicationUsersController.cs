@@ -28,6 +28,47 @@ namespace QualityHats.Controllers
             return View(members);
         }
 
+        // GET: Customers/Delete/5
+        public async Task<IActionResult> Delete(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var applicationUser = await _context.ApplicationUser
+                .AsNoTracking()
+                .SingleOrDefaultAsync(m => m.Id == id);
+
+            if (applicationUser == null)
+            {
+                return NotFound();
+            }
+
+            return View(applicationUser);
+        }
+
+        // POST: Customers/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(string id)
+        {
+            var applicationUser = await _context.ApplicationUser
+                .AsNoTracking()
+                .SingleOrDefaultAsync(m => m.Id == id);
+            _context.ApplicationUser.Remove(applicationUser);
+            try
+            {
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            catch (DbUpdateException)
+            {
+                TempData["CustomerOrder"] = "The Customer being deleted has orders. Delete those orders before trying again.";
+                return RedirectToAction("Delete");
+            }
+        }
+
         private async Task<IEnumerable<ApplicationUser>> ReturnAllMembers()
         {
             IdentityRole role = await _context.Roles.SingleOrDefaultAsync(r => r.Name == "Customer");
