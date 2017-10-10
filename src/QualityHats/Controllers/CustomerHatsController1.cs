@@ -14,18 +14,22 @@ namespace QualityHats.Controllers
     [AllowAnonymous]
     [Authorize(Roles = "Customer")]
 
-    public class CustomerHatsController : Controller
+    public class CustomerHatsController1 : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public CustomerHatsController(ApplicationDbContext context)
+        public CustomerHatsController1(ApplicationDbContext context)
         {
             _context = context;    
         }
 
         // GET: CustomerHats
-        public async Task<IActionResult> Index(int? id, string currentFilter, string searchString, int? page)
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["PriceSortParm"] = sortOrder == "Price" ? "price_desc" : "Price";
+
             if (searchString != null)
             {
                 page = 1;
@@ -34,7 +38,7 @@ namespace QualityHats.Controllers
             {
                 searchString = currentFilter;
             }
-            ViewData["CurrentCategory"] = "All Hats";
+
             ViewData["CurrentFilter"] = searchString;
 
             var hats = from h in _context.Hats
@@ -45,14 +49,23 @@ namespace QualityHats.Controllers
                 hats = hats.Where(s => s.HatName.Contains(searchString) || s.Description.Contains(searchString));
             }
 
-            if (id != null)
+            switch (sortOrder)
             {
-                hats = hats.Where(s => s.CategoryID.Equals(id));
-                ViewData["CurrentCategory"] = _context.Categories.Where(i => i.CategoryID == id.Value).Single().CategoryName;
+                case "name_desc":
+                    hats = hats.OrderByDescending(s => s.HatName);
+                    break;
+                case "Price":
+                    hats = hats.OrderBy(s => s.UnitPrice);
+                    break;
+                case "price_desc":
+                    hats = hats.OrderByDescending(s => s.UnitPrice);
+                    break;
+                default:
+                    hats = hats.OrderBy(s => s.HatName);
+                    break;
             }
 
             int pageSize = 3;
-            ViewBag.Categories = _context.Categories.AsNoTracking().ToList();
             return View(await PaginatedList<Hat>.CreateAsync(hats.AsNoTracking(), page ?? 1, pageSize));
         }
 

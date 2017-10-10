@@ -18,15 +18,6 @@ namespace QualityHats.Models.AccountViewModels
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
-        [Display(Name = "Full Name")]
-        public string FullName
-        {
-            get
-            {
-                return FirstName + " " + LastName;
-            }
-        }
-
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
@@ -48,6 +39,7 @@ namespace QualityHats.Models.AccountViewModels
         [Display(Name = "Address")]
         public string Address { get; set; }
 
+        [Required]
         [StringLength(20, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 9)]
         [Display(Name = "Mobile")]
         public string MobileNumber { get; set; }

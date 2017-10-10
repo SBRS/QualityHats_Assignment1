@@ -9,7 +9,13 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-2">
+            <h4 class="display-4">Hat ID</h4>
+        </div>
+        <div class="col-sm-2">
             <h4 class="display-4">Hat</h4>
+        </div>
+        <div class="col-sm-2">
+            <h4 class="display-4">Hat Category</h4>
         </div>
         <div class="col-sm-2">
             <h4 class="display-4">Quantity</h4>
@@ -22,9 +28,14 @@
     @foreach (var item in Model.CartItems)
     {
         <div class="row">
-
+            <div class="col-sm-2">
+                <a asp-action="Details" asp-route-id="@item.Hat.HatID">@item.Hat.HatID</a>
+            </div>
             <div class="col-sm-2">
                 <a asp-action="Details" asp-route-id="@item.Hat.HatID">@item.Hat.HatName</a>
+            </div>
+            <div class="col-sm-2">
+                <a asp-action="Details" asp-route-id="@item.Hat.HatID">@item.Hat.Category.CategoryName</a>
             </div>
             <div class="col-sm-2">
                 @item.Count<a asp-action="RemoveFromCart" asp-controller="ShoppingCart" asp-route-id="@item.Hat.HatID"><span class="glyphicon glyphicon-remove-circle"></span></a>

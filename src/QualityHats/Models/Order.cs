@@ -15,12 +15,14 @@ namespace QualityHats.Models
 
     public class Order
     {
+        [Display(Name = "Order ID")]
         public int OrderID { get; set; }
         [DisplayFormat(NullDisplayText = "No status")]
         public Status? Status { get; set; }
         public decimal Subtotal { get; set; }
         public decimal GST { get; set; }
         public decimal GrandTotal { get; set; }
+        [Display(Name = "Order Date")]
         public System.DateTime OrderDate { get; set; }
 
         public List<OrderDetail> OrderDetails { get; set; }

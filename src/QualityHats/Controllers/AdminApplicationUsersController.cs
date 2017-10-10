@@ -28,6 +28,79 @@ namespace QualityHats.Controllers
             return View(members);
         }
 
+        // GET: Customers/Details/5
+        public async Task<IActionResult> Details(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var applicationUser = await _context.ApplicationUser
+                .AsNoTracking()
+                .SingleOrDefaultAsync(m => m.Id == id);
+            if (applicationUser == null)
+            {
+                return NotFound();
+            }
+
+            return View(applicationUser);
+        }
+
+        // GET: Customers/Edit/5
+        public async Task<IActionResult> Edit(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var applicationUser = await _context.ApplicationUser
+                .AsNoTracking()
+                .SingleOrDefaultAsync(m => m.Id == id);
+
+            if (applicationUser == null)
+            {
+                return NotFound();
+            }
+            return View(applicationUser);
+        }
+
+        // POST: Customers/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost, ActionName("Edit")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditPost(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var customerToUpdate = await _context.ApplicationUser.SingleOrDefaultAsync(m => m.Id == id);
+
+            if (await TryUpdateModelAsync<ApplicationUser>(
+                customerToUpdate,
+                "",
+                c => c.UserName, c => c.FirstName, c => c.LastName, c => c.Address, c => c.Email, c => c.EmailConfirmed,
+                c => c.Enabled, c => c.HomeNumber, c => c.MobileNumber, c => c.WorkNumber ))
+            {
+                try
+                {
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Index");
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    ModelState.AddModelError("", "Unable to save changes. " +
+                        "Try again, and if the problem persists, " +
+                        "see your system administrator.");
+                }
+            }
+            return View(customerToUpdate);
+        }
+
         // GET: Customers/Delete/5
         public async Task<IActionResult> Delete(string id)
         {

@@ -71,7 +71,10 @@ namespace QualityHats.Models
         }
         public List<CartItem> GetCartItems(ApplicationDbContext db)
         {
-            List<CartItem> cartItems = db.CartItems.Include(i => i.Hat).Where(cartItem => cartItem.CartID == ShoppingCartId).ToList();
+            List<CartItem> cartItems = db.CartItems
+                .Include(i => i.Hat)
+                .ThenInclude(h => h.Category)
+                .Where(cartItem => cartItem.CartID == ShoppingCartId).ToList();
 
             return cartItems;
 

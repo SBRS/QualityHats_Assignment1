@@ -243,6 +243,7 @@ C:\WebApp\QualityHats\src\QualityHats\Controllers\AccountController.cs
 C:\WebApp\QualityHats\src\QualityHats\Controllers\AdminApplicationUsersController.cs
 C:\WebApp\QualityHats\src\QualityHats\Controllers\CategoriesController.cs
 C:\WebApp\QualityHats\src\QualityHats\Controllers\CustomerHatsController.cs
+C:\WebApp\QualityHats\src\QualityHats\Controllers\CustomerOrdersController.cs
 C:\WebApp\QualityHats\src\QualityHats\Controllers\HatsController.cs
 C:\WebApp\QualityHats\src\QualityHats\Controllers\HomeController.cs
 C:\WebApp\QualityHats\src\QualityHats\Controllers\ManageController.cs
@@ -259,8 +260,8 @@ C:\WebApp\QualityHats\src\QualityHats\Migrations\20171004214837_OrderModel.cs
 C:\WebApp\QualityHats\src\QualityHats\Migrations\20171004214837_OrderModel.Designer.cs
 C:\WebApp\QualityHats\src\QualityHats\Migrations\20171005223338_Status.cs
 C:\WebApp\QualityHats\src\QualityHats\Migrations\20171005223338_Status.Designer.cs
-C:\WebApp\QualityHats\src\QualityHats\Migrations\20171007231101_Order_Customer.cs
-C:\WebApp\QualityHats\src\QualityHats\Migrations\20171007231101_Order_Customer.Designer.cs
+C:\WebApp\QualityHats\src\QualityHats\Migrations\20171009015319_ModelsUpdate.cs
+C:\WebApp\QualityHats\src\QualityHats\Migrations\20171009015319_ModelsUpdate.Designer.cs
 C:\WebApp\QualityHats\src\QualityHats\Migrations\ApplicationDbContextModelSnapshot.cs
 C:\WebApp\QualityHats\src\QualityHats\Models\ApplicationUser.cs
 C:\WebApp\QualityHats\src\QualityHats\Models\CartItem.cs
