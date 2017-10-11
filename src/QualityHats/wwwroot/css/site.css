@@ -1,6 +1,11 @@
 ﻿@font-face {
     font-family:"RacingSansOne";
-    src: url("../fonts/RacingSansOne-Regular.ttf") /* TTF file for CSS3 browsers */
+    src: url("../fonts/RacingSansOne-Regular.ttf")
+}
+
+@font-face {
+    font-family:"Righteous";
+    src: url("../fonts/Righteous-Regular.ttf")
 }
 
 #logo {
@@ -15,25 +20,41 @@
     padding-top: 20px;
 }
 .navbar-collapse{
-    font-family: RacingSansOne;
-    font-size: 20px;
+    font-family: Righteous;
+    font-size: 15px;
 }
 
 footer{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
     background-color: #3A3839;
     height: 130px;
     margin-top: 35px;
     text-align: center;
     font-family: RacingSansOne, cursive;
+    color: #ffffff;
 }
 
 .logoFooter{
     font-family: RacingSansOne, cursive;
 	font-size: 30px;
 	padding-top: 20px;
+    color: #ffffff;
+}
+
+.title{
+    font-family: RacingSansOne, cursive;
+}
+
+html {
+    height: 100%;
 }
 
 body {
+    position: relative;
+    min-height: 100%;
     padding-top: 50px;
     padding-bottom: 20px;
 }
@@ -44,6 +65,7 @@ body {
     margin-top: 60px;
     padding-left: 15px;
     padding-right: 15px;
+    margin-bottom: 150px;
 }
 
 /* Set widths on the form inputs since otherwise they're 100% wide */

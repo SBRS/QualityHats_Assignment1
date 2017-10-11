@@ -4,11 +4,11 @@
     ViewData["Title"] = "Edit The Hat";
 }
 
-<h2>Edit the existing hat</h2>
+<h2 class="title">Edit the existing hat</h2>
 
 <form asp-action="Edit" enctype="multipart/form-data">
     <div class="form-horizontal">
-        <h4>Please enter new details</h4>
+        <h4 class="title">Please enter new details</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="HatID" />

@@ -70,11 +70,11 @@
                 @await Component.InvokeAsync("ShoppingCartViewModel")
             }
         </div>
-        <footer>
-            <p class="logoFooter">Quality Hats</p>
-            <p><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> 139 Carrington Rd, Mount Albert, Auckland 1025</p>
-        </footer>
     </div>
+    <footer>
+        <p class="logoFooter">Quality Hats</p>
+        <p><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> 139 Carrington Rd, Mount Albert, Auckland 1025</p>
+    </footer>
 
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
@@ -93,6 +93,8 @@
                 asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwkwT62oj7Qe-ocVfcs_gX3Th9C1wuX04&callback=initMap"
+                type="text/javascript"></script>
     </environment>
 
     @RenderSection("scripts", required: false)
