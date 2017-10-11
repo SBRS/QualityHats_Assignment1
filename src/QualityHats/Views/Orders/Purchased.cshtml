@@ -11,6 +11,18 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
+            @Html.DisplayNameFor(model => model.OrderID)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.OrderID)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.User.FullName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.User.FullName)
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.User.Email)
         </dt>
         <dd>
@@ -29,22 +41,10 @@
             @Html.DisplayFor(model => model.Status)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Subtotal)
+            @Html.DisplayNameFor(model => model.OrderDate)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Subtotal)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.GST)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.GST)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.GrandTotal)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.GrandTotal)
+            @Html.DisplayFor(model => model.OrderDate)
         </dd>
         <dd>
             <table class="table">
@@ -71,6 +71,26 @@
                         </td>
                     </tr>
                 }
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <label>Subtotal:</label>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.Subtotal)
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <label>GST:</label>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.GST)
+                    </td>
+                </tr>
                 <tr>
                     <td></td>
                     <td></td>

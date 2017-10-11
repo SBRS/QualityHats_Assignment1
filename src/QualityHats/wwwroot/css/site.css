@@ -3,9 +3,34 @@
     src: url("../fonts/RacingSansOne-Regular.ttf") /* TTF file for CSS3 browsers */
 }
 
-.navbar-brand {
+#logo {
     font-family: RacingSansOne, cursive;
-    font-size: 25px;
+    font-size: 40px;
+    color: #ff0000;
+}
+
+.navbar {
+    background-color: #3A3839;
+    padding-bottom: 20px;
+    padding-top: 20px;
+}
+.navbar-collapse{
+    font-family: RacingSansOne;
+    font-size: 20px;
+}
+
+footer{
+    background-color: #3A3839;
+    height: 130px;
+    margin-top: 35px;
+    text-align: center;
+    font-family: RacingSansOne, cursive;
+}
+
+.logoFooter{
+    font-family: RacingSansOne, cursive;
+	font-size: 30px;
+	padding-top: 20px;
 }
 
 body {
@@ -16,6 +41,7 @@ body {
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {
+    margin-top: 60px;
     padding-left: 15px;
     padding-right: 15px;
 }

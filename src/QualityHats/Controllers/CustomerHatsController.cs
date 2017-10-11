@@ -24,8 +24,12 @@ namespace QualityHats.Controllers
         }
 
         // GET: CustomerHats
-        public async Task<IActionResult> Index(int? id, string currentFilter, string searchString, int? page)
+        public async Task<IActionResult> Index(int? id, string sortOrder, string currentFilter, string searchString, int? page)
         {
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["PriceSortParm"] = sortOrder == "Price" ? "price_desc" : "Price";
+
             if (searchString != null)
             {
                 page = 1;
@@ -49,6 +53,22 @@ namespace QualityHats.Controllers
             {
                 hats = hats.Where(s => s.CategoryID.Equals(id));
                 ViewData["CurrentCategory"] = _context.Categories.Where(i => i.CategoryID == id.Value).Single().CategoryName;
+            }
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    hats = hats.OrderByDescending(s => s.HatName);
+                    break;
+                case "Price":
+                    hats = hats.OrderBy(s => s.UnitPrice);
+                    break;
+                case "price_desc":
+                    hats = hats.OrderByDescending(s => s.UnitPrice);
+                    break;
+                default:
+                    hats = hats.OrderBy(s => s.HatName);
+                    break;
             }
 
             int pageSize = 3;

@@ -44,24 +44,46 @@
 <div align="center"><h3>WE MAKE PRODUCTS WITH FABRIC FROM AROUND THE WORLD</h3></div>
 <hr />
 <div class="row">
-    <div align="center" class="col-md-3">
-        <h4>PLANE CAP cap</h4>
-        <img src="~/images/planecap.jpg" alt="Plane cap" class="img-responsive" />
-        <p>The dad hat is a staple in every wardrobe and now we have our own. Our plane logo is embroidered on the front with Travel More across the back. All hats feature an adjustable fabric strap, one size fits all.</p>
-    </div>
-    <div align="center" class="col-md-3">
-        <h4>GLOBETROTTER 5-PANEL</h4>
+    <div align="center" class="col-md-4">
+        <h4>Men's Hats</h4>
+        <hr />
         <img src="~/images/globetrotter5panel.jpg" alt="Globetrotter 5-panel" class="img-responsive" />
-        <p>Our staple hat - what it all started with. There's a reason our fans have been taking these on trips all over the world. 5-panel cut-and-sew cap with an adjustable canvas strap and woven elephant label.</p>
+        <hr />
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-controller="Hats" asp-action="Index" asp-route-id="1" class="btn btn-warning">Explore <span class="glyphicon glyphicon-fast-forward"></span></a>
+        }
+        else
+        {
+            <a asp-controller="CustomerHats" asp-action="Index" asp-route-id="1" class="btn btn-warning">Explore <span class="glyphicon glyphicon-fast-forward"></span></a>
+        }
     </div>
-    <div align="center" class="col-md-3">
-        <h4>SERENGETEE BEANIE</h4>
+    <div align="center" class="col-md-4">
+        <h4>Women's Hats</h4>
+        <hr />
         <img src="~/images/serengeteebeanie.jpg" alt="Serengetee beanie" class="img-responsive" />
-        <p>This beanie is knit with 100% cotton yarn, making it the comfiest beanie in your closet. Every beanie features an embossed brown leather patch on the front.</p>
+        <hr />
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-controller="Hats" asp-action="Index" asp-route-id="2" class="btn btn-warning">Explore <span class="glyphicon glyphicon-fast-forward"></span></a>
+        }
+        else
+        {
+            <a asp-controller="CustomerHats" asp-action="Index" asp-route-id="2" class="btn btn-warning">Explore <span class="glyphicon glyphicon-fast-forward"></span></a>
+        }
     </div>
-    <div align="center" class="col-md-3">
-        <h4>CAMDEN 5-PANEL</h4>
+    <div align="center" class="col-md-4">
+        <h4>Children's Hats</h4>
+        <hr />
         <img src="~/images/camden5panel.jpg" alt="Camden 5-panel" class="img-responsive" />
-        <p>For those with a taste for the finer things in life, we just upgraded our 5-panel. Guaranteed to turn heads and keep yours looking classy. Featuring a suede brim, embossed leather label, and adjustable leather strap.</p>
+        <hr />
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-controller="Hats" asp-action="Index" asp-route-id="3" class="btn btn-warning">Explore <span class="glyphicon glyphicon-fast-forward"></span></a>
+        }
+        else
+        {
+            <a asp-controller="CustomerHats" asp-action="Index" asp-route-id="3" class="btn btn-warning">Explore <span class="glyphicon glyphicon-fast-forward"></span></a>
+        }
     </div>
 </div>

@@ -12,7 +12,7 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="Id" />
         <div class="form-group">
-            <label asp-for="UserName" class="col-md-2 control-label"></label>
+            <label asp-for="UserName" class="col-md-2 control-label">User Name</label>
             <div class="col-md-10">
                 <input asp-for="UserName" class="form-control" />
                 <span asp-validation-for="UserName" class="text-danger" />
@@ -50,7 +50,7 @@
             <div class="col-md-offset-2 col-md-10">
                 <div class="checkbox">
                     <input asp-for="EmailConfirmed" />
-                    <label asp-for="EmailConfirmed"></label>
+                    <label asp-for="EmailConfirmed">Email Confirmed</label>
                 </div>
             </div>
         </div>

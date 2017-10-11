@@ -9,9 +9,6 @@
 <div>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.ImagePath)
-        </dt>
         <dd>
             <img style="width: 250px; height: auto;" src="@Href("~" + Model.ImagePath)" alt="Hat Image" onerror="this.onerror = null; this.src = '@Href("~/images/Error.jpg")'">
         </dd>
@@ -44,6 +41,10 @@
         </dt>
         <dd>
             @Html.DisplayFor(modelItem => Model.Supplier.SupplierName)
+        </dd>
+        <dd>
+            <a asp-action="AddToCart" asp-controller="ShoppingCart" class="btn btn-warning" asp-route-id="@Model.HatID">
+            <span class="glyphicon glyphicon-shopping-cart"></span> Add To Cart</a>
         </dd>
     </dl>
 </div>

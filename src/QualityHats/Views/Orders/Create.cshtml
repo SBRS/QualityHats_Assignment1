@@ -6,35 +6,58 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
-<h3>Please confirm order details</h3>
-    <form asp-action="Create">
-        <div class="form-horizontal">
-            <hr />
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-            @*<div class="form-group">
-                    <label asp-for="Status" class="col-md-2 control-label"></label>
-                    <div class="col-md-10">
-                        <input asp-for="Status" class="form-control" />
-                        <span asp-validation-for="Status" class="text-danger" />
-                    </div>
-                </div>*@
-            @*<div class="form-group">
-                    <label asp-for="Subtotal" class="col-md-2 control-label"></label>
-                    <div class="col-md-10">
-                        <input asp-for="Subtotal" class="form-control" />
-                        <span asp-validation-for="Subtotal" class="text-danger" />
-                    </div>
-                </div>*@
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <button type="submit" class="btn btn-default btn-lg">
-                        Place Order <span class="glyphicon glyphicon-fast-forward"></span>
-                    </button>
-                </div>
+<h3>Please confirm your details</h3>
+<hr />
+<dl class="dl-horizontal">
+    <dt>
+        Customer Name
+    </dt>
+    <dd>
+        @ViewBag.userInfo.FullName
+    </dd>
+    <dt>
+        Email
+    </dt>
+    <dd>
+        @ViewBag.userInfo.Email
+    </dd>
+    <dt>
+        Address
+    </dt>
+    <dd>
+        @ViewBag.userInfo.Address
+    </dd>
+    <dt>
+        Mobile
+    </dt>
+    <dd>
+        @ViewBag.userInfo.MobileNumber
+    </dd>
+    <dt>
+        Home
+    </dt>
+    <dd>
+        @ViewBag.userInfo.HomeNumber
+    </dd>
+    <dt>
+        Work
+    </dt>
+    <dd>
+        @ViewBag.userInfo.WorkNumber
+    </dd>
+</dl>
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <a asp-controller="CustomerHats" asp-action="Index" class="btn btn-warning">Back To Hats</a>
+                <button type="submit" class="btn btn-success">
+                    Place Order <span class="glyphicon glyphicon-fast-forward"></span>
+                </button>
             </div>
         </div>
-    </form>
-    @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    }
+    </div>
+</form>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

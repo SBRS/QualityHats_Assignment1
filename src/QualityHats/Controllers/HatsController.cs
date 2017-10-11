@@ -28,7 +28,7 @@ namespace QualityHats.Controllers
         }
 
         // GET: Hats
-        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
+        public async Task<IActionResult> Index(int? id, string sortOrder, string currentFilter, string searchString, int? page)
         {
             ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
@@ -43,6 +43,7 @@ namespace QualityHats.Controllers
                 searchString = currentFilter;
             }
 
+            ViewData["CurrentCategory"] = "All Hats";
             ViewData["CurrentFilter"] = searchString;
 
             var hats = from h in _context.Hats
@@ -51,6 +52,12 @@ namespace QualityHats.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {
                 hats = hats.Where(s => s.HatName.Contains(searchString) || s.Description.Contains(searchString));
+            }
+
+            if (id != null)
+            {
+                hats = hats.Where(s => s.CategoryID.Equals(id));
+                ViewData["CurrentCategory"] = _context.Categories.Where(i => i.CategoryID == id.Value).Single().CategoryName;
             }
 
             switch (sortOrder)
@@ -70,6 +77,7 @@ namespace QualityHats.Controllers
             }
 
             int pageSize = 3;
+            ViewBag.Categories = _context.Categories.AsNoTracking().ToList();
             return View(await PaginatedList<Hat>.CreateAsync(hats.AsNoTracking(), page ?? 1, pageSize));
         }
 

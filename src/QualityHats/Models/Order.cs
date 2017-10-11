@@ -21,6 +21,7 @@ namespace QualityHats.Models
         public Status? Status { get; set; }
         public decimal Subtotal { get; set; }
         public decimal GST { get; set; }
+        [Display(Name = "Grand Total")]
         public decimal GrandTotal { get; set; }
         [Display(Name = "Order Date")]
         public System.DateTime OrderDate { get; set; }

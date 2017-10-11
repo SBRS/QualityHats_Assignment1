@@ -39,6 +39,8 @@ namespace QualityHats.Controllers
         [Authorize(Roles = "Customer")]
         public IActionResult Create()
         {
+            string userId = _userManager.GetUserId(User);
+            ViewBag.userInfo = _context.ApplicationUser.Where(i => i.Id == userId).AsNoTracking().Single();
             return View();
         }
 
