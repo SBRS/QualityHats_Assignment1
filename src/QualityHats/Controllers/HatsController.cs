@@ -46,8 +46,8 @@ namespace QualityHats.Controllers
             ViewData["CurrentCategory"] = "All Hats";
             ViewData["CurrentFilter"] = searchString;
 
-            var hats = from h in _context.Hats
-                           select h;
+            var hats = from h in _context.Hats.Include(h => h.Category)
+                       select h;
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -76,7 +76,7 @@ namespace QualityHats.Controllers
                     break;
             }
 
-            int pageSize = 3;
+            int pageSize = 5;
             ViewBag.Categories = _context.Categories.AsNoTracking().ToList();
             return View(await PaginatedList<Hat>.CreateAsync(hats.AsNoTracking(), page ?? 1, pageSize));
         }
